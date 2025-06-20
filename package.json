@@ -1,9 +1,9 @@
 {
   "name": "library-management-api",
   "version": "1.0.0",
-  "main": "./dis/server.js",
+  "main": "./dist/server.js",
   "scripts": {
-    "start": "nodemon ./dis/server.js",
+    "start": "node ./dist/server.js",
     "build": "tsc",
     "dev": "ts-node-dev --respawn --transpile-only src/server.ts"
   },
