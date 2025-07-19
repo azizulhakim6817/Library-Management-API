@@ -1,6 +1,7 @@
 import { Book } from "./book.model";
 
 export const createBook = async (payload: any) => {
+  payload.available = payload.copies > 0;
   const newBook = await Book.create(payload);
   return newBook;
 };
@@ -29,10 +30,17 @@ export const getBookById = async (id: string) => {
 };
 
 export const updateBook = async (id: string, updateData: any) => {
-  const book = await Book.findByIdAndUpdate(id, updateData, {
-    new: true,
-    runValidators: true,
-  });
+  const book = await Book.findById(id);
+  if (!book) {
+    throw new Error("Book not found");
+  }
+  Object.assign(book, updateData);
+
+  if (updateData.copies !== undefined) {
+    book.available = updateData.copies > 0;
+  }
+  await book.updateAvailability();
+  await book.save();
   return book;
 };
 
